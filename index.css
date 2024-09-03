@@ -1,0 +1,52 @@
+body {
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    width: 800px;
+    padding: 0;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+button {
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    width: 100%;
+    display: block;
+    margin-bottom: 10px; /* Adds space below each button */
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.SubButton:hover {
+    background-color: #ffff00;
+    color: #555;
+}
+.add-exp:hover,
+.add-edu:hover
+{
+    background-color: green;
+    color:black;
+}
+.remove_exp:hover,
+.remove-edu:hover
+{
+    background-color:  #ff0000;
+    color:black;
+}
+input:focus {
+    outline: none;
+    border: 1px solid #555;
+}

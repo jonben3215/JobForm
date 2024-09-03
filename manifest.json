@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "Job Autofill Form",
+    "version": "1.0",
+    "description": "Autofill job application form",
+    "action": {
+      "default_popup": "index.html",
+      "default_icon": {
+        "16": "images/form.png"
+      },
+      "default_title": "Job Autofill Form"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "permissions": [
+      "storage",
+      "activeTab",
+      "scripting",
+      "tabs",
+      "alarms"
+    ]
+  }
+  
