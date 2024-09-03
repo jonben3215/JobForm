@@ -7,7 +7,7 @@
 ### How to Add to Chrome
 1. Go to 
 ```bash
-    chrome://extensions/
+chrome://extensions/
 ```
 2. On the top right corner you will see `Develoepr mode` make sure the slide is on the right
 3. On the left hand corner click on `load unpacked` and upload the entire folder into it.
