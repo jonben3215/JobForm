@@ -215,8 +215,11 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('experience-container').addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('remove_exp')) {
             const experienceEntry = event.target.closest('.experience-entry');
-            experienceEntry.remove();
-            saveData(); // Save data after removal
+            if(confirm("This action cannot be undone."))
+            {
+                experienceEntry.remove();
+                saveData(); // Save data after removal
+            }
         }
     });
 
@@ -224,8 +227,11 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('education-container').addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('remove-edu')) {
             const educationEntry = event.target.closest('.education-entry');
-            educationEntry.remove();
-            saveData(); // Save data after removal
+            if(confirm("This action cannot be undone."))
+            {
+                educationEntry.remove();
+                saveData(); // Save data after removal
+            }
         }
     });
 });
