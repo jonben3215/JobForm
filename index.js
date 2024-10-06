@@ -127,7 +127,6 @@ document.addEventListener('DOMContentLoaded', function () {
         saveData(); // Save immediately after adding new education
     });
 
-    // Load saved data when the extension is opened
     chrome.storage.sync.get('userInfo', function (data) {
         if (data.userInfo) {
             document.getElementById('Firstname').value = data.userInfo.firstname || '';
@@ -139,78 +138,90 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('City').value = data.userInfo.city || '';
             document.getElementById('State').value = data.userInfo.state || '';
             document.getElementById('Zip').value = data.userInfo.zip || '';
-
-            // Load experiences
+    
+            // Load experiences (sorted by end date or start date if end date is empty)
             const experienceContainer = document.getElementById('experience-container');
             experienceContainer.innerHTML = ''; // Clear existing entries to avoid duplication
             if (data.userInfo.experiences) {
-                data.userInfo.experiences.forEach((exp) => {
-                    const newExperienceContainer = document.createElement('div');
-                    newExperienceContainer.className = 'experience-entry';
-                    newExperienceContainer.innerHTML = `
-                        <label for="job-title">Job/Position Title:</label>
-                        <input type="text" class="job-title" name="job-title" value="${exp.jobTitle}" required>
-
-                        <label for="company-name">Company Name:</label>
-                        <input type="text" class="company-name" name="company-name" value="${exp.companyName}" required>
-
-                        <label for="experience-city">City</label>
-                        <input type="text" class="experience-city" name="experience-city" value="${exp.city}" required>
-
-                        <label for="experience-state">State</label>
-                        <input type="text" class="experience-state" name="experience-state" value="${exp.state}" required>
-
-                        <label for="start-date">Start Date:</label>
-                        <input type="date" class="start-date" name="start-date" value="${exp.startDate}" required>
-
-                        <label for="end-date">End Date:</label>
-                        <input type="date" class="end-date" name="end-date" value="${exp.endDate}" required>
-
-                        <label for="description">Description</label>
-                        <textarea class="description" name="description" required>${exp.description}</textarea>
-
-                        <!-- Add a Remove Experience button -->
-                        <button class="remove_exp" type="button">Remove Experience</button>
-                    `;
-                    experienceContainer.appendChild(newExperienceContainer);
-                });
+                data.userInfo.experiences
+                    .sort((a, b) => {
+                        const endA = new Date(a.endDate || a.startDate);
+                        const endB = new Date(b.endDate || b.startDate);
+                        return endB - endA; // Sort from most recent to oldest
+                    })
+                    .forEach((exp) => {
+                        const newExperienceContainer = document.createElement('div');
+                        newExperienceContainer.className = 'experience-entry';
+                        newExperienceContainer.innerHTML = `
+                            <label for="job-title">Job/Position Title:</label>
+                            <input type="text" class="job-title" name="job-title" value="${exp.jobTitle}" required>
+    
+                            <label for="company-name">Company Name:</label>
+                            <input type="text" class="company-name" name="company-name" value="${exp.companyName}" required>
+    
+                            <label for="experience-city">City</label>
+                            <input type="text" class="experience-city" name="experience-city" value="${exp.city}" required>
+    
+                            <label for="experience-state">State</label>
+                            <input type="text" class="experience-state" name="experience-state" value="${exp.state}" required>
+    
+                            <label for="start-date">Start Date:</label>
+                            <input type="date" class="start-date" name="start-date" value="${exp.startDate}" required>
+    
+                            <label for="end-date">End Date:</label>
+                            <input type="date" class="end-date" name="end-date" value="${exp.endDate}" required>
+    
+                            <label for="description">Description</label>
+                            <textarea class="description" name="description" required>${exp.description}</textarea>
+    
+                            <!-- Add a Remove Experience button -->
+                            <button class="remove_exp" type="button">Remove Experience</button>
+                        `;
+                        experienceContainer.appendChild(newExperienceContainer);
+                    });
             }
-
-            // Load education entries
+    
+            // Load education (sorted by graduation date)
             const educationContainer = document.getElementById('education-container');
             educationContainer.innerHTML = ''; // Clear existing entries to avoid duplication
             if (data.userInfo.education) {
-                data.userInfo.education.forEach((edu) => {
-                    const newEducationContainer = document.createElement('div');
-                    newEducationContainer.className = 'education-entry';
-                    newEducationContainer.innerHTML = `
-                        <label for="school">School</label>
-                        <input type="text" class="school" name="school" value="${edu.school}" required>
-
-                        <label for="degree">Degree</label>
-                        <input type="text" class="degree" name="degree" value="${edu.degree}" required>
-
-                        <label for="field-of-study">Field of Study</label>
-                        <input type="text" class="field-of-study" name="field-of-study" value="${edu.fieldOfStudy}" required>
-
-                        <label for="education-city">City</label>
-                        <input type="text" class="education-city" name="education-city" value="${edu.city}" required>
-
-                        <label for="education-state">State</label>
-                        <input type="text" class="education-state" name="education-state" value="${edu.state}" required>
-
-                        <label for="graduation-date">Graduation Date</label>
-                        <input type="date" class="graduation-date" name="graduation-date" value="${edu.graduationDate}" required>
-
-                        <!-- Add a Remove Education button -->
-                        <button class="remove-edu" type="button">Remove Education</button>
-                    `;
-                    educationContainer.appendChild(newEducationContainer);
-                });
+                data.userInfo.education
+                    .sort((a, b) => {
+                        const gradA = new Date(a.graduationDate);
+                        const gradB = new Date(b.graduationDate);
+                        return gradB - gradA; // Sort from most recent to oldest
+                    })
+                    .forEach((edu) => {
+                        const newEducationContainer = document.createElement('div');
+                        newEducationContainer.className = 'education-entry';
+                        newEducationContainer.innerHTML = `
+                            <label for="school">School</label>
+                            <input type="text" class="school" name="school" value="${edu.school}" required>
+    
+                            <label for="degree">Degree</label>
+                            <input type="text" class="degree" name="degree" value="${edu.degree}" required>
+    
+                            <label for="field-of-study">Field of Study</label>
+                            <input type="text" class="field-of-study" name="field-of-study" value="${edu.fieldOfStudy}" required>
+    
+                            <label for="education-city">City</label>
+                            <input type="text" class="education-city" name="education-city" value="${edu.city}" required>
+    
+                            <label for="education-state">State</label>
+                            <input type="text" class="education-state" name="education-state" value="${edu.state}" required>
+    
+                            <label for="graduation-date">Graduation Date</label>
+                            <input type="date" class="graduation-date" name="graduation-date" value="${edu.graduationDate}" required>
+    
+                            <!-- Add a Remove Education button -->
+                            <button class="remove-edu" type="button">Remove Education</button>
+                        `;
+                        educationContainer.appendChild(newEducationContainer);
+                    });
             }
         }
     });
-
+    
     // Event listener for removing experience entries
     document.getElementById('experience-container').addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('remove_exp')) {
